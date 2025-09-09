@@ -20,7 +20,6 @@ jobs:
       with:
         node-version: '18'
         cache: 'npm'
-        cache-dependency-path: '**/package-lock.json'
       if: hashFiles('**/package.json') != ''
     
     - name: Setup Python
@@ -57,7 +56,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     name: Deploy to Vercel
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && secrets.VERCEL_TOKEN != ''
     
     steps:
     - name: Checkout code
@@ -75,7 +74,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     name: Deploy to Railway
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && secrets.RAILWAY_TOKEN != ''
     
     steps:
     - name: Checkout code
