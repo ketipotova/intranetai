@@ -50,7 +50,8 @@ app.get('/', (req, res) => {
             <h1>🚀 IntranetAI</h1>
             <p>AI-powered intranet solution</p>
             <div class="status">
-                <strong>✅ Successfully deployed on Railway!</strong>
+                <strong>✅ Successfully deployed with full CI/CD automation!</strong>
+                <br><small>🚀 Auto-deploying on Vercel & Railway</small>
             </div>
         </div>
     </body>
