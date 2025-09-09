@@ -56,7 +56,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     name: Deploy to Vercel
-    if: github.ref == 'refs/heads/main' && secrets.VERCEL_TOKEN != ''
+    if: github.ref == 'refs/heads/main'
     
     steps:
     - name: Checkout code
@@ -64,17 +64,22 @@ jobs:
     
     - name: Deploy to Vercel
       uses: amondnet/vercel-action@v25
+      if: ${{ secrets.VERCEL_TOKEN != '' }}
       with:
         vercel-token: ${{ secrets.VERCEL_TOKEN }}
         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
         vercel-args: '--prod'
+    
+    - name: Skip Vercel Deployment
+      if: ${{ secrets.VERCEL_TOKEN == '' }}
+      run: echo "Skipping Vercel deployment - VERCEL_TOKEN not configured"
 
   deploy-railway:
     needs: test
     runs-on: ubuntu-latest
     name: Deploy to Railway
-    if: github.ref == 'refs/heads/main' && secrets.RAILWAY_TOKEN != ''
+    if: github.ref == 'refs/heads/main'
     
     steps:
     - name: Checkout code
@@ -82,6 +87,11 @@ jobs:
     
     - name: Deploy to Railway
       uses: railway-deploy/railway-action@v2
+      if: ${{ secrets.RAILWAY_TOKEN != '' }}
       with:
         railway-token: ${{ secrets.RAILWAY_TOKEN }}
         service: ${{ secrets.RAILWAY_SERVICE }}
+    
+    - name: Skip Railway Deployment
+      if: ${{ secrets.RAILWAY_TOKEN == '' }}
+      run: echo "Skipping Railway deployment - RAILWAY_TOKEN not configured"
